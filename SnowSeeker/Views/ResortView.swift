@@ -25,6 +25,14 @@ struct ResortView: View {
                     .resizable()
                     .scaledToFit()
 
+                if !resort.imageCredit.isEmpty {
+                    Text("Image Credit: \(resort.imageCredit)")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .padding(.top, 8)
+                        .padding(.horizontal)
+                }
+
                 HStack {
                     if sizeClass == .compact && typeSize > .large {
                         VStack(spacing: 10) { ResortDetailsView(resort: resort) }
@@ -69,6 +77,7 @@ struct ResortView: View {
                 }
                 .padding(.horizontal)
             }
+
         }
         .navigationTitle("\(resort.name), \(resort.country)")
         .navigationBarTitleDisplayMode(.inline)

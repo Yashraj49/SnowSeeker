@@ -7,19 +7,47 @@
 
 import SwiftUI
 
+
+
+enum ResortSortingOption {
+    case `default`
+    case alphabetical
+    case country
+}
+
+
+
 class Favorites: ObservableObject {
+    
+    @Published var resortsX: [Resort] = []
+    @Published var sortingOption: ResortSortingOption = .default
+    
     // the actual resorts the user has favorited
-    private var resorts: Set<String>
+    @Published private var resorts: Set<String>
 
     // the key we're using to read/write in UserDefaults
     private let saveKey = "Favorites"
 
     init() {
         // load our saved data
-
-        // still here? Use an empty array
-        resorts = []
+        if let savedResorts = UserDefaults.standard.stringArray(forKey: saveKey) {
+            resorts = Set(savedResorts)
+        } else {
+            resorts = []
+        }
+        resortsX = []
     }
+    
+    var sortedResorts: [Resort] {
+            switch sortingOption {
+            case .default:
+                return resortsX
+            case .alphabetical:
+                return resortsX.sorted { $0.name < $1.name }
+            case .country:
+                return resortsX.sorted { $0.country < $1.country }
+            }
+        }
 
     // returns true if our set contains this resort
     func contains(_ resort: Resort) -> Bool {
@@ -41,6 +69,7 @@ class Favorites: ObservableObject {
     }
 
     func save() {
-        // write out our data
+        UserDefaults.standard.set(Array(resorts), forKey: saveKey)
     }
 }
+

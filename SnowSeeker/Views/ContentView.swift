@@ -58,6 +58,40 @@ struct ContentView: View {
             }
             .navigationTitle("Resorts")
             .searchable(text: $searchText, prompt: "Search for a resort")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Menu {
+                        Button(action: {
+                            favorites.sortingOption = .default
+                        }) {
+                            Text("Default")
+                            if favorites.sortingOption == .default {
+                                Image(systemName: "checkmark")
+                            }
+                        }
+
+                        Button(action: {
+                            favorites.sortingOption = .alphabetical
+                        }) {
+                            Text("Alphabetical")
+                            if favorites.sortingOption == .alphabetical {
+                                Image(systemName: "checkmark")
+                            }
+                        }
+
+                        Button(action: {
+                            favorites.sortingOption = .country
+                        }) {
+                            Text("Country")
+                            if favorites.sortingOption == .country {
+                                Image(systemName: "checkmark")
+                            }
+                        }
+                    } label: {
+                        Label("Sort By", systemImage: "arrow.up.arrow.down")
+                    }
+                }
+            }
 
             WelcomeView()
         }
@@ -72,6 +106,7 @@ struct ContentView: View {
         }
     }
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
